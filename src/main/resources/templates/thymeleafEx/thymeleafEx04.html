@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>상품 리스트 출력 예제</h1>
+   
+    <table border="1">
+        <thead>
+            <tr>
+                <td>순번</td>
+                <td>상품명</td>  
+                <td>상품설명</td>
+                <td>가격</td>
+                <td>상품등록일</td>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- 
+            참고사이트: https://ifuwanna.tistory.com/200
+            
+            th:each 사용하면 반복 상태를 추적할 수 있는 status변수 제공 
+            index: 현재 반복 인덱스(0부터 시작)
+            count: 현재 반복 인덱스(1부터 시작)
+            size: 총 요소 수
+            current: 현재 요소 
+            even: 현재 반복이 짝수인지 여부 (boolean)
+            odd: 현재 반복이 홀수인지 여부 (boolean)
+
+            -->
+            <tr th:each="itemDto, status: ${itemDtoList}">
+                <td th:switch="${status.even}">
+                    <span th:case=true>짝수#</span>
+                    <span th:case=false>홀수#</span>
+                </td>
+                <!-- <td th:if="${status.even}" th:text="짝수"></td>
+                <td th:unless="${status.even}" th:text="홀수"></td> -->
+                <td th:text="${itemDto.itemNm}"></td>
+                <td th:text="${itemDto.itemDetail}"></td>
+                <td th:text="${itemDto.price}"></td>
+                <td th:text="${itemDto.regTime}"></td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
