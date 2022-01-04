@@ -7,10 +7,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -47,6 +49,21 @@ public class ItemController {
         }
         
         return "redirect:/"; //상품이 정상적으로 등록되었다면 메인화면으로 이동
+    }
+
+    @GetMapping(value = "/admin/item/{itemId}")
+    public String itemDtl(@PathVariable("itemId") Long itemId,Model model){
+
+        try {
+            ItemFormDto itemFormDto=itemService.getItemDtl(itemId); // 조회한 상품 데이터를 모델에 담아 뷰로 전달
+            model.addAttribute("itemFormDto",itemFormDto);
+        }catch (EntityNotFoundException e){
+            model.addAttribute("errorMessage","존재하지 않는 상품입니다.");
+            model.addAttribute("itemFormDto",new ItemFormDto());
+            return "item/itemForm";
+        }
+
+        return "item/itemForm";
     }
 
 }
