@@ -105,4 +105,11 @@ public class ItemController {
         model.addAttribute("maxPage",5); //페이지 번호 최대 개수
         return "item/itemMng";
     }
+
+    @GetMapping(value = "/item/{itemId}")
+    public String itemDtl(Model model, @PathVariable("itemId") Long itemId){
+        ItemFormDto itemFormDto=itemService.getItemDtl(itemId);
+        model.addAttribute("item",itemFormDto);
+        return "item/itemDtl";
+    }
 }
