@@ -3,6 +3,7 @@ package com.shopping.service;
 import com.shopping.dto.ItemFormDto;
 import com.shopping.dto.ItemImgDto;
 import com.shopping.dto.ItemSearchDto;
+import com.shopping.dto.MainItemDto;
 import com.shopping.entity.Item;
 import com.shopping.entity.ItemImg;
 import com.shopping.repository.ItemImgRepository;
@@ -93,6 +94,12 @@ public class ItemService {
     public Page<Item> getAdminItemPage(ItemSearchDto itemSearchDto, Pageable pageable){
         //상품 조회 조건과 페이지 정보를 파라미터로 받아서 상품 데이터 조회
         return itemRepository.getAdminItemPage(itemSearchDto,pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<MainItemDto> getMainItemPage(ItemSearchDto itemSearchDto,  Pageable pageable){
+        //메인 페이지에 상품 데이터 보여주기
+        return itemRepository.getMainItemPage(itemSearchDto,pageable);
     }
     
 }
