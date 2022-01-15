@@ -57,6 +57,7 @@ public class OrderService {
         for(Order order:orders){
             OrderHistDto orderHistDto=new OrderHistDto(order);
             List<OrderItem> orderItems=order.getOrderItems();
+            // order.getOrderItems() 호출될때마다 조회 쿼리문이 추가로 실행됨 -> 성능 저하 -> default_batch_fetch_size 사용
             for(OrderItem orderItem:orderItems){
                 ItemImg itemImg=itemImgRepository.findByItemIdAndRepimgYn(orderItem.getItem().getId(),"Y"); //주문한 상품 대표 이미지 조회
                 OrderItemDto orderItemDto=new OrderItemDto(orderItem,itemImg.getImgUrl());
