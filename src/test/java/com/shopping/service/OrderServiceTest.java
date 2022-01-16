@@ -1,6 +1,7 @@
 package com.shopping.service;
 
 import com.shopping.constant.ItemSellStatus;
+import com.shopping.constant.OrderStatus;
 import com.shopping.dto.OrderDto;
 import com.shopping.entity.Item;
 import com.shopping.entity.Member;
@@ -77,6 +78,26 @@ class OrderServiceTest {
 
         assertEquals(totalPrice,order.getTotalPrice()); //주문한 상품의 총 가격과 DB에 저장된 상품의 가격을 비교
         
+    }
+
+    @Test
+    @DisplayName("주문 취소 테스트")
+    public void cancelOrder(){
+        //상품과 회원 데이터 생성
+        Item item=saveItem();
+        Member member=saveMember();
+
+        OrderDto orderDto=new OrderDto();
+        orderDto.setCount(10);
+        orderDto.setItemId(item.getId());
+        Long orderId=orderService.order(orderDto,member.getEmail()); //주문 데이터 생성
+
+        Order order=orderRepository.findById(orderId).orElseThrow(EntityNotFoundException::new); //생성한 주문 엔티티 조회
+        orderService.cancelOrder(orderId); //해당 주문 취소
+
+        assertEquals(OrderStatus.CANCEL,order.getOrderStatus()); //주문의 상태가 취소 상태라면 테스트 통과
+        assertEquals(100,item.getStockNumber()); //취소 후 상품의 재고가 처음 재고 개수인 100개와 동일하면 테스트 통과
+
     }
 
 }
