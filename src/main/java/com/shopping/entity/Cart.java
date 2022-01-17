@@ -25,6 +25,12 @@ public class Cart extends BaseEntity{
     private Member member;
 
     //------------------------------------
-
+    
+    // 회원 한 명당 1개의 장바구니를 가지고 있으므로, 처음 장바구니 담을 때는 해당 회원의 장바구니를 생성
+    public static Cart createCart(Member member){
+        Cart cart=new Cart();
+        cart.setMember(member);
+        return cart;
+    }
 
 }
