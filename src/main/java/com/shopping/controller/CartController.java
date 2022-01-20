@@ -1,13 +1,17 @@
 package com.shopping.controller;
 
+import com.shopping.dto.CartDetailDto;
 import com.shopping.dto.CartItemDto;
 import com.shopping.service.CartService;
 import lombok.RequiredArgsConstructor;
+import org.dom4j.rule.Mode;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -47,6 +51,18 @@ public class CartController {
         }
 
         return new ResponseEntity<Long>(cartItemId,HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/cart")
+    public String orderHist(Principal principal, Model model){
+        
+        //현재 로그인한 사용자의 이메일 정보를 이용해 장바구니에 담겨있는 상품 정보 조회
+        List<CartDetailDto> cartDetailDtoList=cartService.getCartList(principal.getName());
+
+        //조회한 장바구니 상품 정보를 뷰에 전달
+        model.addAttribute("cartItems",cartDetailDtoList);
+        return "cart/cartList";
+        
     }
 
 }
