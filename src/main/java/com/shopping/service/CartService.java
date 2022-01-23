@@ -98,4 +98,10 @@ public class CartService {
         cartItem.updateCount(count);
     }
 
+    //장바구니에 넣어 놓은 상품을 삭제하는 로직
+    public void deleteCartItem(Long cartItemId){
+        CartItem cartItem=cartItemRepository.findById(cartItemId).orElseThrow(EntityNotFoundException::new);
+        cartItemRepository.delete(cartItem);
+    }
+
 }
