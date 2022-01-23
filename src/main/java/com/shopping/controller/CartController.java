@@ -76,4 +76,15 @@ public class CartController {
         return new ResponseEntity<Long>(cartItemId,HttpStatus.OK);
     }
 
+    @DeleteMapping(value = "/cartItem/{cartItemId}")
+    public @ResponseBody ResponseEntity deleteCartItem(@PathVariable("cartItemId") Long cartItemId, Principal principal){
+
+        if(!cartService.validateCartItem(cartItemId, principal.getName())){ //수정 권한 체크
+            return new ResponseEntity<String>("수정 권한이 없습니다.",HttpStatus.FORBIDDEN);
+        }
+
+        cartService.deleteCartItem(cartItemId); //해당 장바구니 상품 삭제
+        return new ResponseEntity<Long>(cartItemId,HttpStatus.OK);
+    }
+
 }
